@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">TrimokNotes</string>
     <!-- MainActivity -->
-    <string name="name_note_hint">Enter the name of the note</string>
-    <string name="btn_save">Save</string>
+    <string name="name_note_text_field_hint">Enter the name of the note</string>
+    <string name="button_save">Save</string>
+    <string name="item_delete_button">Delete</string>
     <!-- MainActivity -->
 </resources>
