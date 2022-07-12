@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TrimokNotes</string>
+    <!-- MainActivity -->
+    <string name="name_note_hint">Enter the name of the note</string>
+    <string name="btn_save">Save</string>
+    <!-- MainActivity -->
+</resources>
