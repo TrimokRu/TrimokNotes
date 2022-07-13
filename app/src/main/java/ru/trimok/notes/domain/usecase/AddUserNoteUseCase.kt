@@ -5,8 +5,7 @@ import ru.trimok.notes.domain.repository.NoteRepository
 
 class AddUserNoteUseCase(private val noteRepository: NoteRepository) {
 
-    fun execute(note: Note): String{
-        noteRepository.addNote(note)
-        return "Successfully Added"
+    fun execute(note: Note): Boolean{
+        return noteRepository.addNote(note)
     }
 }

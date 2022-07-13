@@ -28,6 +28,17 @@ class NoteRepositoryImpl(context: Context): NoteRepository {
     }
 
     override fun getNotes(): MutableList<Note>{
-        return mutableListOf()
+        val notesData = mutableListOf<ru.trimok.notes.data.Note>()
+        val notesResult = mutableListOf<Note>()
+        try{
+            notesData.addAll(noteDatabase.noteDao().getNotes())
+            if(notesData.size > 0){
+                for (i in notesData)
+                    notesResult.add(Note(i.noteName))
+            }
+        }catch (e: Exception){
+            Log.e("room", e.toString())
+        }
+        return notesResult
     }
 }
