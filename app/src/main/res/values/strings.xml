@@ -4,5 +4,6 @@
     <string name="name_note_text_field_hint">Enter the name of the note</string>
     <string name="button_save">Save</string>
     <string name="item_delete_button">Delete</string>
+    <string name="not_found_notes">Not found notes!</string>
     <!-- MainActivity -->
 </resources>

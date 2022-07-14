@@ -4,9 +4,9 @@ import ru.trimok.notes.domain.models.Note
 
 interface NoteRepository {
 
-    fun addNote(note: Note): Boolean
+    fun addNote(note: Note): Long
 
-    fun deleteNote(noteId: Int): Boolean
+    fun deleteNote(noteId: Long): Boolean
 
     fun getNotes(): MutableList<Note>
 }

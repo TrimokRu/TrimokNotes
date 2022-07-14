@@ -2,6 +2,7 @@ package ru.trimok.notes.presentation
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -19,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private val noteRepository by lazy { NoteRepositoryImpl(context = applicationContext) }
     private val addUserNoteUseCase by lazy { AddUserNoteUseCase(noteRepository = noteRepository) }
-    private val deleteUserNoteUseCase by lazy { DeleteUserNoteUseCase(noteRepository = noteRepository) }
     private val getUserNotesUseCase by lazy { GetUserNotesUseCase(noteRepository = noteRepository) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,18 +27,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val notesAdapter = NotesAdapter()
-        binding.notesRecyclerView.layoutManager= LinearLayoutManager(this)
+        val notesAdapter = NotesAdapter(applicationContext)
+        binding.notesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.notesRecyclerView.adapter = notesAdapter
         notesAdapter.addItems(getUserNotesUseCase.execute())
 
+        if(notesAdapter.itemCount < 1) binding.notFoundTextView.visibility = View.VISIBLE
+
 
         binding.saveButton.setOnClickListener {
-            val note = Note(binding.nameNoteTextField.editText?.text.toString())
-            if(addUserNoteUseCase.execute(note = note)){
-                notesAdapter.addItem(note)
-                binding.nameNoteTextField.editText?.setText("")
-            }
+            addUserNoteUseCase.execute(Note(noteName = binding.nameNoteTextField.editText?.text.toString()))?.let { note -> notesAdapter.addItem(note) }
+        if(notesAdapter.itemCount > 0) binding.notFoundTextView.visibility = View.INVISIBLE
         }
     }
 }

@@ -12,19 +12,18 @@ class NoteRepositoryImpl(context: Context): NoteRepository {
 
     private val noteDatabase = NoteDatabase.getDatabase(context)
 
-    override fun addNote(note: Note): Boolean{
+    override fun addNote(note: Note): Long{
         return try {
             noteDatabase.noteDao().addNote(ru.trimok.notes.data.Note(noteName = note.noteName))
-            true
         }catch (e: Exception){
             Log.e("Room", e.toString())
-            false
+            -1
         }
 
     }
 
-    override fun deleteNote(noteId: Int): Boolean{
-        return true
+    override fun deleteNote(noteId: Long): Boolean{
+        return noteDatabase.noteDao().deleteItem(noteId) == 1
     }
 
     override fun getNotes(): MutableList<Note>{
@@ -34,7 +33,7 @@ class NoteRepositoryImpl(context: Context): NoteRepository {
             notesData.addAll(noteDatabase.noteDao().getNotes())
             if(notesData.size > 0){
                 for (i in notesData)
-                    notesResult.add(Note(i.noteName))
+                    notesResult.add(Note(id = i.id, noteName = i.noteName))
             }
         }catch (e: Exception){
             Log.e("room", e.toString())

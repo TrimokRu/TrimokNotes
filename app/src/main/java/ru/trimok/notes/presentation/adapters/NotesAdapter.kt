@@ -1,22 +1,33 @@
 package ru.trimok.notes.presentation.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.trimok.notes.R
+import ru.trimok.notes.data.repository.NoteRepositoryImpl
 import ru.trimok.notes.databinding.ItemNoteBinding
 import ru.trimok.notes.domain.models.Note
+import ru.trimok.notes.domain.usecase.AddUserNoteUseCase
+import ru.trimok.notes.domain.usecase.DeleteUserNoteUseCase
 
-class NotesAdapter():  RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+class NotesAdapter(context: Context):  RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
 
     private val notesMutableList = mutableListOf<Note>()
 
-    class NotesViewHolder(item: View): RecyclerView.ViewHolder(item){
+    private val noteRepository by lazy { NoteRepositoryImpl(context = context) }
+    private val deleteUserNoteUseCase by lazy { DeleteUserNoteUseCase(noteRepository = noteRepository) }
+
+    inner class NotesViewHolder(item: View): RecyclerView.ViewHolder(item){
         private val binding = ItemNoteBinding.bind(item)
 
         fun bind(note: Note) = with(binding){
             itemTitleNoteTextView.text = note.noteName
+            itemDeleteButton.setOnClickListener {
+                if(deleteUserNoteUseCase.execute(noteId = note.id))
+                    deleteItem(noteId = note.id)
+            }
         }
     }
 
@@ -31,6 +42,14 @@ class NotesAdapter():  RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
 
     override fun getItemCount(): Int {
         return notesMutableList.size
+    }
+
+    fun deleteItem(noteId: Long){
+        (notesMutableList.firstOrNull { it.id == noteId }).let {
+            val notePos = notesMutableList.indexOf(it)
+            notesMutableList.remove(it)
+            notifyItemRemoved(notePos)
+        }
     }
 
     fun addItem(note: Note){
