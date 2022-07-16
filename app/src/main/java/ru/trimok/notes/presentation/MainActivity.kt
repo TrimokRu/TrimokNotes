@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.trimok.notes.R
 import ru.trimok.notes.data.repository.NoteRepositoryImpl
 import ru.trimok.notes.data.storage.room.RoomNoteStorage
@@ -21,14 +22,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        mainViewModel = ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
 
         mainViewModel.getNoteAdapterSize().observe(this) { size ->
             binding.noteSizeTextView.text = getString(R.string.notes_size).format(size)
