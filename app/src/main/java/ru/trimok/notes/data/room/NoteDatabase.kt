@@ -1,4 +1,4 @@
-package ru.trimok.notes.data
+package ru.trimok.notes.data.room
 
 import android.content.Context
 import androidx.room.Database
@@ -14,7 +14,7 @@ abstract class NoteDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: NoteDatabase? = null
 
-        fun getDatabase(context: Context): NoteDatabase{
+        fun getDatabase(context: Context): NoteDatabase {
             val tempInstance = INSTANCE
             if(tempInstance != null)
                 return tempInstance

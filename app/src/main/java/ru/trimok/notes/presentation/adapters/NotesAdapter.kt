@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.trimok.notes.R
 import ru.trimok.notes.data.repository.NoteRepositoryImpl
+import ru.trimok.notes.data.storage.room.RoomNoteStorage
 import ru.trimok.notes.databinding.ItemNoteBinding
 import ru.trimok.notes.domain.models.Note
 import ru.trimok.notes.domain.usecase.AddUserNoteUseCase
 import ru.trimok.notes.domain.usecase.DeleteUserNoteUseCase
+import ru.trimok.notes.presentation.MainViewModel
 
-class NotesAdapter(context: Context):  RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+class NotesAdapter(private val mainViewModel: MainViewModel):  RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
 
     private val notesMutableList = mutableListOf<Note>()
-
-    private val noteRepository by lazy { NoteRepositoryImpl(context = context) }
-    private val deleteUserNoteUseCase by lazy { DeleteUserNoteUseCase(noteRepository = noteRepository) }
 
     inner class NotesViewHolder(item: View): RecyclerView.ViewHolder(item){
         private val binding = ItemNoteBinding.bind(item)
@@ -25,7 +24,7 @@ class NotesAdapter(context: Context):  RecyclerView.Adapter<NotesAdapter.NotesVi
         fun bind(note: Note) = with(binding){
             itemTitleNoteTextView.text = note.noteName
             itemDeleteButton.setOnClickListener {
-                if(deleteUserNoteUseCase.execute(noteId = note.id))
+                if(mainViewModel.deleteNote(noteId = note.id))
                     deleteItem(noteId = note.id)
             }
         }

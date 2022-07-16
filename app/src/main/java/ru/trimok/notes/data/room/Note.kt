@@ -1,4 +1,4 @@
-package ru.trimok.notes.data
+package ru.trimok.notes.data.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

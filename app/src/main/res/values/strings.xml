@@ -5,5 +5,6 @@
     <string name="button_save">Save</string>
     <string name="item_delete_button">Delete</string>
     <string name="not_found_notes">Not found notes!</string>
+    <string name="notes_size">Added notes: %d</string>
     <!-- MainActivity -->
 </resources>
